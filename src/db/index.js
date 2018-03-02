@@ -15,7 +15,7 @@ class DB {
       operatorsAliases: false
     });
 
-    const Urls = this.sequelize.define("urls", {
+    this.Urls = this.sequelize.define("urls", {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       originalUrl: { type: Sequelize.STRING, allowNull: false },
       shortUrlSlug: { type: Sequelize.STRING, allowNull: false },
@@ -25,6 +25,25 @@ class DB {
 
   init() {
     return this.sequelize.sync();
+  }
+
+  addUrl(url) {
+    // find first
+    this.Urls.findAll({
+      where: {
+        originalUrl: url
+      }
+    }).then(res => {
+      // check if exists if not create one
+      // return this.Urls.create({
+      //   originalUrl: url,
+      //   shortUrlSlug: this.generateSlug(url)
+      // }).then(url => url.toJson().shortUrlSlug);
+    });
+  }
+
+  generateSlug(url) {
+    // generate a slug for url
   }
 }
 
