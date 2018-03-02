@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build":
-      "rimraf dist/ && babel ./src --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "npm run build && node dist/index.js"
+      "rimraf dist/ && babel ./src --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files && nodemon dist/index.js",
+    "start": "babel-watch ./src "
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/alexgvozden/url-shortener#readme",
   "dependencies": {
     "express": "4.16.2",
+    "path": "0.12.7",
     "pg": "7.4.1",
     "pg-hstore": "2.3.2",
     "sequelize": "4.35.1"
@@ -28,6 +29,7 @@
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-preset-es2015": "6.24.1",
+    "babel-watch": "2.0.7",
     "rimraf": "2.6.2"
   }
 }
