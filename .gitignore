@@ -3,6 +3,9 @@
 # Dependencies
 node_modules/**
 
+# Dist
+dist/**
+
 
 # Compiled output
 build
