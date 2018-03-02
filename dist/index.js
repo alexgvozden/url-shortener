@@ -1,31 +1,10 @@
 "use strict";
 
-var Sequelize = require("sequelize");
-var sequelize = new Sequelize("urlshortener", "gvozden", "", {
-  host: "localhost",
-  dialect: "postgres",
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  },
-  // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-  operatorsAliases: false
-});
+var _db = require("./db");
 
-var Urls = sequelize.define("urls", {
-  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-  originalUrl: { type: Sequelize.STRING, allowNull: false },
-  shortUrlSlug: { type: Sequelize.STRING, allowNull: false },
-  visits: { type: Sequelize.INTEGER, defaultValue: 0 }
-});
+var _db2 = _interopRequireDefault(_db);
 
-sequelize.sync().then(function () {
-  return Urls.create({
-    originalUrl: "https://test/com",
-    shortUrlSlug: "x1"
-  });
-}).then(function (url) {
-  console.log(url.toJSON());
-});
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var db = new _db2.default();
+db.init();
