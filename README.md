@@ -29,13 +29,19 @@ _For development_
 Project will run on http://localhost:3000 but you can change port at `src/index.js`
 
 ```
-$ npm run start
+$ npm run dev
 ```
 
-_For production_
+_To build_
 
 Project will be built into `/dist` folder and you can run it with `nodemon` or `pm2`
 
 ```
 $ npm run build
+```
+
+_Start app_
+
+```
+$ npm run start
 ```
