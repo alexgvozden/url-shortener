@@ -158,21 +158,26 @@ class DB {
   }
 
   async getLatest() {
-    const latest = await this.Urls.findAll({
-      order: [['createdAt', 'DESC']],
-      limit: 100
-    });
+    try {
+      const latest = await this.Urls.findAll({
+        order: [['createdAt', 'DESC']],
+        limit: 100
+      });
 
-    if (latest) return latest;
+      if (latest) return latest;
+    } catch (error) {}
     return [];
   }
 
   async getMostViewed() {
-    const mostViewed = await this.Urls.findAll({
-      order: [['visits', 'DESC']],
-      limit: 100
-    });
-    if (mostViewed) return mostViewed;
+    try {
+      const mostViewed = await this.Urls.findAll({
+        order: [['visits', 'DESC']],
+        limit: 100
+      });
+      if (mostViewed) return mostViewed;
+    } catch (error) {}
+
     return [];
   }
 }
