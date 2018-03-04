@@ -4,6 +4,7 @@
 <head>
   <title>URL shortener</title>
   <meta charset="utf-8">
+  <meta name="csrf-token" content="<%= csrfToken %>">
 
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
   <!-- no zoom, no scaling -->
@@ -24,7 +25,7 @@
       <p>NodeJS, Sequalize, Postgre demo</p>
     </div>
     <div>
-      <form action="/url" method="post ">
+      <form action="/url" method="post">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text" id="url">

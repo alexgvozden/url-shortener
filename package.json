@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/alexgvozden/url-shortener#readme",
   "dependencies": {
+    "cookie-parser": "1.4.3",
+    "csurf": "1.9.0",
+    "ejs": "2.5.7",
     "express": "4.16.2",
     "path": "0.12.7",
     "pg": "7.4.1",
