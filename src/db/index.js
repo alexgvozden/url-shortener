@@ -2,10 +2,12 @@ const Sequelize = require('sequelize');
 const crypto = require('crypto');
 const Op = Sequelize.Op;
 
+import { USER, PASS, HOST } from '../config/db';
+
 class DB {
   constructor() {
-    this.sequelize = new Sequelize('urlshortener', 'gvozden', '', {
-      host: 'localhost',
+    this.sequelize = new Sequelize('urlshortener', USER, PASS, {
+      host: HOST,
       dialect: 'postgres',
       pool: {
         max: 5,
