@@ -26,6 +26,7 @@ class DB {
         pass: PASS
       };
     }
+    console.log('CONNECTING TO ', JSON.stringify(pgOpts));
     this.sequelize = new Sequelize(pgOpts.pathname, pgOpts.user, pgOpts.pass, {
       host: pgOpts.hostname,
       port: pgOpts.port,
