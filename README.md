@@ -7,6 +7,10 @@ It features:
 * simple URL shortening
 * custom aliases
 * listing latest and most viewed URLs
+* async Sequalize database
+* Heroku ready
+
+Try it out on [Heroku](https://heroku-url-shortener.herokuapp.com/)
 
 ## Configuring database
 
