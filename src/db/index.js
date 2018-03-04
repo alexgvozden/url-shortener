@@ -10,7 +10,7 @@ class DB {
     if (uri) {
       const url = require('url').parse(uri);
       pgOpts = {
-        pathname: url.pathname,
+        pathname: url.pathname.substr(1),
         port: url.port,
         host: url.hostname,
         user: url.auth.split(':')[0],
