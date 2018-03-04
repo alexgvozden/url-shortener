@@ -20,10 +20,11 @@ Place following content and modify values with your PostgreSQL connection detail
 You can also your Postgre URL by defining environment variable DATABASE_URL
 
 ```
-export const HOST = 'localhost';
-export const DATABASE = 'urlshortener';
-export const USER = 'gvozden';
+export const HOST = '';
+export const DATABASE = '';
+export const USER = '';
 export const PASSWORD = '';
+export const PORT = ;
 ```
 
 Database will be initiated when running the server.
