@@ -14,7 +14,7 @@ $ npm run start
 
 _For production_
 
-Project will be built in /dist folder
+Project will be built into /dist folder
 
 ```
 $ npm run build

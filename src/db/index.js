@@ -77,7 +77,7 @@ class DB {
       const found = exists.count;
 
       // url and alias do not exist in database
-      console.log('exists', exists.count);
+      // console.log('exists', exists.count);
       if (found == 0) {
         let aliasExists;
         // no existing found, insert new url
@@ -131,6 +131,25 @@ class DB {
     } catch (error) {
       return { error: error.toString() };
     }
+  }
+
+  async getLatest() {
+    const latest = await this.Urls.findAll({
+      order: [['createdAt', 'DESC']],
+      limit: 100
+    });
+
+    if (latest) return latest;
+    return [];
+  }
+
+  async getMostViewed() {
+    const mostViewed = await this.Urls.findAll({
+      order: [['visits', 'DESC']],
+      limit: 100
+    });
+    if (mostViewed) return mostViewed;
+    return [];
   }
 }
 

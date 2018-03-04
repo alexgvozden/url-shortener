@@ -5,6 +5,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
+import moment from 'moment';
 
 import { isURL } from './utils/URL';
 
@@ -91,20 +92,19 @@ app.post('/', csrfProtection, async (req, res) => {
   }
 
   // render the page
-  res.render('home', vars);
+  renderHome(req, res, vars);
 });
 
 // serve index page
 app.get('/', csrfProtection, async (req, res) => {
-  res.render('home', { ...initialVars, csrfToken: req.csrfToken() });
+  renderHome(req, res, { ...initialVars, csrfToken: req.csrfToken() });
 });
 
 // serve any other url as redirection possibility
 app.get('*', csrfProtection, async (req, res) => {
-  console.log('body ', req.params, req.params['0']);
   if (!req.params['0']) {
     // if alias is incorrect then send error message
-    res.render('home', {
+    renderHome(req, res, {
       ...initialVars,
       csrfToken: req.csrfToken(),
       error: true,
@@ -124,6 +124,31 @@ app.get('*', csrfProtection, async (req, res) => {
     res.redirect(url.url);
   }
 });
+
+const renderHome = async (req, res, data) => {
+  // get latest and most viewed
+  const latest = await db.getLatest();
+  const mostViewed = await db.getMostViewed();
+
+  // console.log('latest', latest.length);
+  // console.log('mostViewed', mostViewed.length);
+  const baseUrl = req.protocol + '://' + req.headers.host + '/';
+
+  data.latest = latest.map(url => ({
+    alias: baseUrl + url.alias,
+    url: url.url,
+    visits: url.visits,
+    createdAt: moment(url.createdAt).fromNow()
+  }));
+  data.mostViewed = mostViewed.map(url => ({
+    alias: baseUrl + url.alias,
+    url: url.url,
+    visits: url.visits,
+    createdAt: moment(url.createdAt).fromNow()
+  }));
+
+  res.render('home', data);
+};
 
 app.listen(PORT);
 console.log(`Listening on ${PORT}`);
