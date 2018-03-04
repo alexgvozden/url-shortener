@@ -9,6 +9,18 @@
     table {
       font-size: 12px
     }
+
+    .colUrl {
+      width: 40%;
+    }
+
+    .colAlias {
+      width: 20%;
+    }
+
+    .colCreatedVisits {
+      width: 15%;
+    }
   </style>
 
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
@@ -85,10 +97,10 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">URL</th>
-            <th scope="col">Alias</th>
-            <th scope="col">Visits</th>
-            <th scope="col">Created</th>
+            <th class="colUrl" scope="col">URL</th>
+            <th class="colAlias" scope="col">Alias</th>
+            <th class="colCreatedVisits" scope="col">Visits</th>
+            <th class="colCreatedVisits" scope="col">Created</th>
           </tr>
         </thead>
         <tbody>
@@ -121,27 +133,32 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">URL</th>
-            <th scope="col">Visits</th>
-            <th scope="col">Created</th>
+            <th class="colUrl" scope="col">URL</th>
+            <th class="colAlias" scope="col">Alias</th>
+            <th class="colCreatedVisits" scope="col">Created</th>
+            <th class="colCreatedVisits" scope="col">Visits</th>
           </tr>
         </thead>
         <tbody>
           <% mostViewed.forEach(function(url, i, mostViewed){ %>
             <tr>
               <td>
-                <a href="<%= url.alias %>">
+                <a href="<%= url.redirect %>">
                   <%= url.url %>
                 </a>
               </td>
               <td>
-                <%= url.visits %>
+                <a href="<%= url.redirect %>">
+                  <%= url.alias %>
+                </a>
               </td>
 
               <td>
                 <%= url.createdAt %>
               </td>
-
+              <td>
+                <%= url.visits %>
+              </td>
             </tr>
             <% }) %>
         </tbody>
