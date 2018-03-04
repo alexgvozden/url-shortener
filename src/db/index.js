@@ -104,12 +104,25 @@ class DB {
         }
       }
     } catch (error) {
-      return { error: error.message };
+      return { error: error.toString() };
     }
   }
 
-  generateSlug(url) {
-    // generate a slug for url
+  async getUrlFromAlias(alias) {
+    try {
+      const url = await this.Urls.findOne({
+        where: { alias: alias }
+      });
+
+      if (url) {
+        await url.update({ visits: url.visits + 1 });
+        return { success: true, url: url.url };
+      } else {
+        return { error: 'Invalid alias specified, cannot redirect to URL' };
+      }
+    } catch (error) {
+      return { error: error.toString() };
+    }
   }
 }
 

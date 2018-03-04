@@ -95,8 +95,33 @@ app.post('/', csrfProtection, async (req, res) => {
 });
 
 // serve index page
-app.get('/', csrfProtection, function(req, res) {
+app.get('/', csrfProtection, async (req, res) => {
   res.render('home', { ...initialVars, csrfToken: req.csrfToken() });
+});
+
+app.get('*', csrfProtection, async (req, res) => {
+  console.log('body ', req.params, req.params['0']);
+  if (!req.params['0']) {
+    // if alias is incorrect then send error message
+    res.render('home', {
+      ...initialVars,
+      csrfToken: req.csrfToken(),
+      error: true,
+      errorMessage: 'Invalid alias specified, cannot redirect to URL'
+    });
+  }
+
+  const url = await db.getUrlFromAlias(req.params['0'].substr(1));
+  if (url.error) {
+    res.render('home', {
+      ...initialVars,
+      csrfToken: req.csrfToken(),
+      error: true,
+      errorMessage: url.error
+    });
+  } else {
+    res.redirect(url.url);
+  }
 });
 
 app.listen(PORT);
