@@ -3,8 +3,7 @@
 # Dependencies
 node_modules/**
 
-# Config
-src/config/**
+
 
 # Dist
 dist/**
