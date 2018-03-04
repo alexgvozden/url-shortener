@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const crypto = require('crypto');
 const Op = Sequelize.Op;
 
 class DB {
@@ -77,11 +78,25 @@ class DB {
 
       // url and alias do not exist in database
       console.log('exists', exists.count);
-      if (found == 2) {
+      if (found == 0) {
+        // no existing found, insert new url
+        if (alias == '') {
+          alias = crypto
+            .createHash('md5')
+            .update(url)
+            .digest('hex');
+          alias = alias.substring(0, 6);
+        }
+        await this.Urls.create({ url: url, alias: alias });
+
+        // all good return alias and success
+        return { success: true, alias: alias };
+        //
+      } else if (found == 2) {
         // both url and alias exist in database
         return { error: 'URL and alias exist in database' };
       } else if (found == 1) {
-        // chec if url or alias is issue
+        // check if url or alias is issue
         if (exists.rows[0].url == url) {
           return { error: 'URL already exists in database' };
         } else {

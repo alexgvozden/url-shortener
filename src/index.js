@@ -34,10 +34,23 @@ app.use(function(err, req, res, next) {
 db.init();
 
 let initialVars = {
-  error: '',
+  // true if new url was saved
+  success: false,
+  // url if new url is saved
+  urlSaved: '',
+  // alias if new url is saved
+  aliasSaved: '',
+  // errors
+  // general error
+  error: false,
+  errorMessage: '',
+  // error for url
   errorUrl: false,
+  // error for alias
   errorAlias: false,
+  // form url
   url: '',
+  // form alias
   alias: ''
 };
 
@@ -59,14 +72,19 @@ app.post('/', csrfProtection, async (req, res) => {
   if (!vars.errorUrl && !vars.errorAlias) {
     const addUrl = await db.addUrl(req.body.url, req.body.alias);
     if (addUrl.error) {
-      vars.error = addUrl.error;
-    } else {
+      vars.error = true;
+      vars.errorMessage = addUrl.error;
+    } else if (addUrl.success) {
       // successfully added url
+      vars.success = true;
+      vars.urlSaved = req.body.url;
+      vars.aliasSaved =
+        req.protocol + '://' + req.headers.host + '/' + addUrl.alias;
     }
   }
 
   // return results if any error is detected
-  if (vars.errorUrl || vars.errorAlias) {
+  if (vars.error || vars.errorUrl || vars.errorAlias) {
     // assign previous values so user can correct errors
     vars.url = req.body.url;
     vars.alias = req.body.alias;
