@@ -11,6 +11,7 @@ import { isURL } from './utils/URL';
 const PORT = 3000;
 
 import DB from './db';
+const db = new DB();
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -29,23 +30,20 @@ app.use(function(err, req, res, next) {
   res.send('form tampered with');
 });
 
-const db = new DB();
+// init db tables
+db.init();
 
-async function start() {
-  const dbInit = await db.init();
-}
-
-start();
+let initialVars = {
+  error: '',
+  errorUrl: false,
+  errorAlias: false,
+  url: '',
+  alias: ''
+};
 
 // create new url
-app.post('/', csrfProtection, (req, res) => {
-  let vars = {
-    csrfToken: req.csrfToken(),
-    errorUrl: false,
-    errorAlias: false,
-    url: '',
-    alias: ''
-  };
+app.post('/', csrfProtection, async (req, res) => {
+  let vars = { ...initialVars, csrfToken: req.csrfToken() };
 
   // check for proper submitted url
   if (!req.body.url || !isURL(req.body.url)) {
@@ -57,15 +55,22 @@ app.post('/', csrfProtection, (req, res) => {
     vars.errorAlias = true;
   }
 
+  // process url and create new short url if no errors
+  if (!vars.errorUrl && !vars.errorAlias) {
+    const addUrl = await db.addUrl(req.body.url, req.body.alias);
+    if (addUrl.error) {
+      vars.error = addUrl.error;
+    } else {
+      // successfully added url
+    }
+  }
+
   // return results if any error is detected
   if (vars.errorUrl || vars.errorAlias) {
     // assign previous values so user can correct errors
     vars.url = req.body.url;
     vars.alias = req.body.alias;
-    res.render('home', vars);
   }
-
-  // process url and create new short url
 
   // render the page
   res.render('home', vars);
@@ -73,16 +78,7 @@ app.post('/', csrfProtection, (req, res) => {
 
 // serve index page
 app.get('/', csrfProtection, function(req, res) {
-  let vars = {
-    csrfToken: req.csrfToken(),
-    errorUrl: false,
-    errorAlias: false,
-    url: '',
-    alias: ''
-  };
-
-  res.render('home', vars);
-  // res.sendFile(path.join(__dirname + '/index.html'));
+  res.render('home', { ...initialVars, csrfToken: req.csrfToken() });
 });
 
 app.listen(PORT);
