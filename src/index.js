@@ -12,7 +12,6 @@ import { isURL } from './utils/URL';
 const PORT = process.env.PORT || 3000;
 
 import DB from './db';
-const db = new DB(process.env.DATABASE_URL);
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -30,9 +29,6 @@ app.use(function(err, req, res, next) {
   res.status(403);
   res.send('form tampered with');
 });
-
-// init db tables
-db.init();
 
 let initialVars = {
   // true if new url was saved
@@ -152,5 +148,13 @@ const renderHome = async (req, res, data) => {
   res.render('home', data);
 };
 
-app.listen(PORT);
-console.log(`Listening on ${PORT}`);
+let db;
+
+async function startApp() {
+  db = await new DB(process.env.DATABASE_URL);
+  await db.init();
+  app.listen(PORT);
+  console.log(`Listening on ${PORT}`);
+}
+
+startApp();
