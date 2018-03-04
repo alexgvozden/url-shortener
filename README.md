@@ -13,9 +13,11 @@ It features:
 For app to run please adjust config variables for database in `src/config/db.js`
 
 Place following content and modify values with your PostgreSQL connection details
+You can also your Postgre URL by defining environment variable DATABASE_URL
 
 ```
 export const HOST = 'localhost';
+export const DATABASE = 'urlshortener';
 export const USER = 'gvozden';
 export const PASSWORD = '';
 ```

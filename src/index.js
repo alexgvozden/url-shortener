@@ -9,10 +9,10 @@ import moment from 'moment';
 
 import { isURL } from './utils/URL';
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 import DB from './db';
-const db = new DB();
+const db = new DB(process.env.DATABASE_URL);
 
 const app = express();
 app.set('view engine', 'ejs');

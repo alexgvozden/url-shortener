@@ -2,12 +2,33 @@ const Sequelize = require('sequelize');
 const crypto = require('crypto');
 const Op = Sequelize.Op;
 
-import { USER, PASS, HOST } from '../config/db';
+import { USER, PASS, HOST, DATABASE, PORT } from '../config/db';
 
 class DB {
-  constructor() {
-    this.sequelize = new Sequelize('urlshortener', USER, PASS, {
-      host: HOST,
+  constructor(uri) {
+    let pgOpts;
+    if (uri) {
+      const url = require('url').parse(uri);
+      pgOpts = {
+        pathname: url.pathname,
+        port: url.port,
+        host: url.hostname,
+        user: url.auth.split(':')[0],
+        pass: url.auth.split(':')[1]
+      };
+    } else {
+      // local config from file
+      pgOpts = {
+        pathname: DATABASE,
+        port: PORT,
+        host: HOST,
+        user: USER,
+        pass: PASS
+      };
+    }
+    this.sequelize = new Sequelize(pgOpts.pathname, pgOpts.user, pgOpts.pass, {
+      host: pgOpts.hostname,
+      port: pgOpts.port,
       dialect: 'postgres',
       pool: {
         max: 5,
