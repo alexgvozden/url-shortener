@@ -79,13 +79,21 @@ class DB {
       // url and alias do not exist in database
       console.log('exists', exists.count);
       if (found == 0) {
+        let aliasExists;
         // no existing found, insert new url
         if (alias == '') {
-          alias = crypto
-            .createHash('md5')
-            .update(url)
-            .digest('hex');
-          alias = alias.substring(0, 6);
+          do {
+            alias = crypto
+              .createHash('md5')
+              .update(url)
+              .digest('hex');
+            alias = alias.substring(0, 6);
+            // check if this generated alias is not used already
+            aliasExists = await this.Urls.count({
+              where: { alias: alias }
+            });
+            // loop through creating alias until one that is free available
+          } while (aliasExists > 0);
         }
         await this.Urls.create({ url: url, alias: alias });
 

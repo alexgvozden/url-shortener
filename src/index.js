@@ -99,6 +99,7 @@ app.get('/', csrfProtection, async (req, res) => {
   res.render('home', { ...initialVars, csrfToken: req.csrfToken() });
 });
 
+// serve any other url as redirection possibility
 app.get('*', csrfProtection, async (req, res) => {
   console.log('body ', req.params, req.params['0']);
   if (!req.params['0']) {
