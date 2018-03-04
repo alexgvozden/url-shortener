@@ -8,14 +8,22 @@ class DB {
   constructor(uri) {
     let pgOpts;
     if (uri) {
-      const url = require('url').parse(uri);
-      pgOpts = {
-        pathname: url.pathname.substr(1),
-        port: url.port,
-        host: url.hostname,
-        user: url.auth.split(':')[0],
-        pass: url.auth.split(':')[1]
-      };
+      //const url = require('url').parse(uri);
+      this.sequelize = new Sequelize(uri, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        dialectOptions: {
+          ssl: true
+        },
+        pool: {
+          max: 5,
+          min: 0,
+          acquire: 30000,
+          idle: 10000
+        },
+        // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
+        operatorsAliases: false
+      });
     } else {
       // local config from file
       pgOpts = {
@@ -25,21 +33,26 @@ class DB {
         user: USER,
         pass: PASS
       };
+      this.sequelize = new Sequelize(
+        pgOpts.pathname,
+        pgOpts.user,
+        pgOpts.pass,
+        {
+          host: pgOpts.hostname,
+          port: pgOpts.port,
+          dialect: 'postgres',
+          pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+          },
+          // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
+          operatorsAliases: false
+        }
+      );
     }
     console.log('CONNECTING TO ', JSON.stringify(pgOpts));
-    this.sequelize = new Sequelize(pgOpts.pathname, pgOpts.user, pgOpts.pass, {
-      host: pgOpts.hostname,
-      port: pgOpts.port,
-      dialect: 'postgres',
-      pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-      },
-      // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-      operatorsAliases: false
-    });
 
     this.Urls = this.sequelize.define(
       'urls',

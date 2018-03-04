@@ -151,8 +151,13 @@ const renderHome = async (req, res, data) => {
 let db;
 
 async function startApp() {
-  db = await new DB(process.env.DATABASE_URL);
-  await db.init();
+  try {
+    db = await new DB(process.env.DATABASE_URL);
+    await db.init();
+  } catch (error) {
+    console.log('ERROR ESTABLISHING DATABASE CONNECTION');
+  }
+
   app.listen(PORT);
   console.log(`Listening on ${PORT}`);
 }
