@@ -9,15 +9,45 @@
   <!-- no zoom, no scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+
   <!-- <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, height=device-height"> -->
 </head>
 
 <body>
-  <form action="/url" method="post">
-    <label for="url">URL</label>
-    <input name="url" type="text" value="">
-    <input type="submit" value="Get short URL" />
-  </form>
+  <div class="container">
+    <div class="jumbotron pt-3 pb-1">
+      <h1>URL Shortener</h1>
+      <p>NodeJS, Sequalize, Postgre demo</p>
+    </div>
+    <div>
+      <form action="/url" method="post ">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="url">
+              <i class="icon ion-ios-world-outline"></i>
+            </span>
+          </div>
+          <input name="url" type="text" class="form-control" placeholder="URL" aria-label="URL" aria-describedby="url">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="url">
+              <i class="icon ion-pound"></i>
+            </span>
+          </div>
+          <input name="customAlias" type="text" class="form-control" placeholder="Custom alias (optional)" aria-label="Custom alias (optional)"
+            aria-describedby="url">
+        </div>
+        <div class="d-flex justify-content-start">
+          <button type="button" class="btn btn-primary">Give me short URL</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>
