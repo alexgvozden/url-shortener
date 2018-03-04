@@ -86,6 +86,7 @@
         <thead>
           <tr>
             <th scope="col">URL</th>
+            <th scope="col">Alias</th>
             <th scope="col">Visits</th>
             <th scope="col">Created</th>
           </tr>
@@ -94,8 +95,13 @@
           <% latest.forEach(function(url, i, latest){ %>
             <tr>
               <td>
-                <a href="<%= url.alias %>">
+                <a href="<%= url.redirect %>">
                   <%= url.url %>
+                </a>
+              </td>
+              <td>
+                <a href="<%= url.redirect %>">
+                  <%= url.alias %>
                 </a>
               </td>
               <td>

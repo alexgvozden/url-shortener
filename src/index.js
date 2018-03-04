@@ -135,13 +135,15 @@ const renderHome = async (req, res, data) => {
   const baseUrl = req.protocol + '://' + req.headers.host + '/';
 
   data.latest = latest.map(url => ({
-    alias: baseUrl + url.alias,
+    alias: '/' + url.alias,
+    redirect: baseUrl + url.alias,
     url: url.url,
     visits: url.visits,
     createdAt: moment(url.createdAt).fromNow()
   }));
   data.mostViewed = mostViewed.map(url => ({
-    alias: baseUrl + url.alias,
+    alias: '/' + url.alias,
+    redirect: baseUrl + url.alias,
     url: url.url,
     visits: url.visits,
     createdAt: moment(url.createdAt).fromNow()
